@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body { font-family: system-ui; background: #f0f2f5; margin: 0; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 414px; background: #fff; min-height: 100vh; position: relative; padding-bottom: 80px; }
+        .header { display: flex; align-items: center; padding: 40px 25px 15px; gap: 15px; }
+        .profile-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #007bff; }
+        .balance-sec { padding: 10px 25px; }
+        .amount { font-size: 2.2rem; font-weight: 800; }
+        .card { background: linear-gradient(135deg, #09203f, #537895); margin: 20px 25px; padding: 25px; border-radius: 20px; color: white; }
+        .transactions { padding: 20px 25px; }
+        .item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
+        .nav a { text-decoration: none; color: #999; font-size: 0.75rem; text-align: center; }
+        .active { color: #007bff; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <img src="profile.jpg" alt="Profile" class="profile-img">
+            <div><small>Welcome back,</small><br><strong>Hyun Jessica</strong></div>
+        </div>
+        <div class="balance-sec">
+            <small>Total Balance</small>
+            <div class="amount">$1,465,000.00</div>
+        </div>
+        <div class="card">
+            <div style="text-align: right;">VISA</div>
+            <div style="font-family: monospace; font-size: 1.3rem; margin: 15px 0;">4123 **** **** 9876</div>
+            <div>HYUN JESSICA</div>
+        </div>
+        <div class="transactions">
+            <h4>Recent Activity</h4>
+            <div class="item">
+                <div><strong>Direct Deposit</strong><br><small>Oct 26</small></div>
+                <div style="color: green; font-weight: bold;">+$5,200.00</div>
+            </div>
+        </div>
+        <nav class="nav">
+            <a href="dashboard.html" class="active">🏠<br>Home</a>
+            <a href="transfer.html">💸<br>Transfer</a>
+            <a href="settings.html">⚙️<br>Settings</a>
+        </nav>
+    </div>
+</body>
+</html>
