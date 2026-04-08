@@ -3,77 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Chase Dashboard</title>
     <style>
         body { font-family: system-ui; background: #f0f2f5; margin: 0; display: flex; justify-content: center; }
         .app { width: 100%; max-width: 414px; background: #fff; min-height: 100vh; position: relative; padding-bottom: 80px; }
-        .header { display: flex; align-items: center; padding: 40px 25px 15px; gap: 15px; }
-        .profile-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #007bff; }
+        
+        .header { display: flex; align-items: center; padding: 40px 25px 15px; gap: 15px; position: relative; }
+        /* Chase Logo Styling */
+        .bank-logo { position: absolute; top: 20px; right: 25px; width: 60px; height: auto; } 
+        
+        .profile-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #117aca; }
         .balance-sec { padding: 10px 25px; }
-        .amount { font-size: 2.2rem; font-weight: 800; }
-        .card { background: linear-gradient(135deg, #09203f, #537895); margin: 20px 25px; padding: 25px; border-radius: 20px; color: white; }
+        .amount { font-size: 2.2rem; font-weight: 800; color: #1a1a1a; }
+        
+        /* Updated Card Color to Chase Blue */
+        .card { background: #117aca; margin: 20px 25px; padding: 25px; border-radius: 20px; color: white; box-shadow: 0 8px 20px rgba(17, 122, 202, 0.2); }
+        
         .transactions { padding: 20px 25px; }
         .item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee; }
         .nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
         .nav a { text-decoration: none; color: #999; font-size: 0.75rem; text-align: center; }
-        .active { color: #007bff; font-weight: bold; }
+        .active { color: #117aca; font-weight: bold; }
     </style>
 </head>
 <body>
     <div class="app">
         <div class="header">
+            <!-- Chase Logo added via URL -->
+            <img src="https://logodownload.org" alt="Chase Logo" class="bank-logo">
             <img src="profile.jpg" alt="Profile" class="profile-img">
-            <div><small>Welcome back,</small><br><strong>Hyun Jessica</strong></div>
+            <div><small style="color: #666;">Welcome back,</small><br><strong>Hyun Jessica</strong></div>
         </div>
+
         <div class="balance-sec">
-            <small>Total Balance</small>
+            <small style="color: #666; font-weight: 600;">Total Balance</small>
             <div class="amount">$1,465,000.00</div>
         </div>
+
         <div class="card">
-            <div style="text-align: right;">VISA</div>
-            <div style="font-family: monospace; font-size: 1.3rem; margin: 15px 0;">4123 **** **** 9876</div>
-            <div>HYUN JESSICA</div>
+            <div style="text-align: right; font-weight: bold; font-style: italic; letter-spacing: 1px;">CHASE</div>
+            <div style="font-family: monospace; font-size: 1.3rem; margin: 20px 0;">4123 **** **** 9876</div>
+            <div style="font-size: 0.9rem; letter-spacing: 1px; opacity: 0.9;">HYUN JESSICA</div>
         </div>
-        <!-- Updated Transactions Section -->
-<div class="transactions" style="padding: 20px 25px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h4 style="margin: 0;">Recent Activity</h4>
-        <span style="font-size: 0.75rem; color: #007bff; font-weight: bold; cursor: pointer;">Download CSV</span>
-    </div>
 
-    <!-- Month 1 -->
-    <div style="font-size: 0.7rem; color: #888; margin-bottom: 10px; font-weight: bold; text-transform: uppercase;">Current Month</div>
-    
-    <div class="item" style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;">
-        <div><strong>Mobile Deposit</strong><br><small style="color: #999;">Mar 12 • <span style="color: #f39c12;">Pending</span></small></div>
-        <div style="color: #27ae60; font-weight: bold;">+$12,500.00</div>
-    </div>
+        <div class="transactions">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h4 style="margin: 0;">Recent Activity</h4>
+                <span style="font-size: 0.75rem; color: #117aca; font-weight: bold; cursor: pointer;">See All</span>
+            </div>
 
-    <div class="item" style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;">
-        <div><strong>Apple Store</strong><br><small style="color: #999;">Mar 05 • <span style="color: #27ae60;">Completed</span></small></div>
-        <div style="color: #e74c3c; font-weight: bold;">-$1,240.50</div>
-    </div>
+            <div style="font-size: 0.7rem; color: #888; margin-bottom: 10px; font-weight: bold; text-transform: uppercase;">Current Month</div>
+            
+            <!-- Updated Status to Successful and Date to April 08 -->
+            <div class="item">
+                <div><strong>Mobile Deposit</strong><br><small style="color: #999;">Apr 08 • <span style="color: #27ae60; font-weight: bold;">Successful</span></small></div>
+                <div style="color: #27ae60; font-weight: bold;">+$12,500.00</div>
+            </div>
 
-    <!-- Month 2 -->
-    <div style="font-size: 0.7rem; color: #888; margin: 15px 0 10px; font-weight: bold; text-transform: uppercase;">Previous Month</div>
+            <div class="item">
+                <div><strong>Apple Store</strong><br><small style="color: #999;">Apr 05 • <span style="color: #27ae60;">Completed</span></small></div>
+                <div style="color: #e74c3c; font-weight: bold;">-$1,240.50</div>
+            </div>
 
-    <div class="item" style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;">
-        <div><strong>International Wire</strong><br><small style="color: #999;">Feb 24 • <span style="color: #27ae60;">Completed</span></small></div>
-        <div style="color: #27ae60; font-weight: bold;">+$45,000.00</div>
-    </div>
+            <div style="font-size: 0.7rem; color: #888; margin: 15px 0 10px; font-weight: bold; text-transform: uppercase;">Previous Month</div>
 
-    <div class="item" style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #eee;">
-        <div><strong>Luxury Estate</strong><br><small style="color: #999;">Feb 15 • <span style="color: #27ae60;">Completed</span></small></div>
-        <div style="color: #e74c3c; font-weight: bold;">-$8,700.00</div>
-    </div>
-</div>
+            <div class="item">
+                <div><strong>International Wire</strong><br><small style="color: #999;">Mar 24 • <span style="color: #27ae60;">Completed</span></small></div>
+                <div style="color: #27ae60; font-weight: bold;">+$45,000.00</div>
+            </div>
+        </div>
         
-        </div>
         <nav class="nav">
-            <a href="dashboard.html" class="active">🏠<br>Home</a>
-            <a href="transfer.html">💸<br>Transfer</a>
-            <a href="settings.html">⚙️<br>Settings</a>
+            <a href="#" class="active">🏠<br>Home</a>
+            <a href="#">💸<br>Transfer</a>
+            <a href="#">⚙️<br>Settings</a>
         </nav>
     </div>
 </body>
 </html>
+
