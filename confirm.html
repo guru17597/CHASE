@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Transfer</title>
+    <style>
+        body { font-family: system-ui; background: #f0f2f5; margin: 0; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 414px; background: #fff; min-height: 100vh; padding: 40px 25px; box-sizing: border-box; }
+        
+        .summary-box { background: #f9f9f9; border-radius: 15px; padding: 20px; margin: 20px 0; border: 1px solid #eee; }
+        .line-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+        .total { border-top: 2px solid #ddd; padding-top: 10px; font-weight: bold; font-size: 1.1rem; color: #08415c; }
+        
+        .notice { font-size: 0.8rem; color: #666; background: #fff3cd; padding: 15px; border-radius: 10px; border-left: 5px solid #ffc107; margin-top: 20px; }
+        
+        .btn-confirm { background: #007bff; color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 20px; font-size: 1rem; }
+        .btn-back { background: none; border: none; color: #999; width: 100%; margin-top: 15px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h2 style="color: #08415c;">Review Transaction</h2>
+        <p style="color: #666;">Please verify the details below before processing your international wire.</p>
+
+        <div class="summary-box">
+            <div class="line-item"><span>Recipient:</span> <strong>James Wilson</strong></div>
+            <div class="line-item"><span>Destination:</span> <strong>United Kingdom</strong></div>
+            <div class="line-item"><span>Amount:</span> <strong>$40,000.00</strong></div>
+            <div class="line-item" style="color: #d9534f;"><span>Service Fee (1.6%):</span> <strong>$640.00</strong></div>
+            <div class="line-item total"><span>Total to Deduct:</span> <span>$40,640.00</span></div>
+        </div>
+
+        <div class="notice">
+            <strong>Important Notice:</strong> Standard international processing times apply. Ensure the recipient's bank details are correct to avoid delays or service adjustments.
+        </div>
+
+        <button class="btn-confirm" onclick="alert('Verification Code Sent to Mobile Number')">Confirm & Pay</button>
+        <button class="btn-back" onclick="window.history.back()">Go Back</button>
+    </div>
+</body>
+</html>
