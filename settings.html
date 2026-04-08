@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Settings</title>
+    <style>
+        body { font-family: system-ui; background: #f0f2f5; margin: 0; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 414px; background: #fff; min-height: 100vh; padding: 40px 25px; box-sizing: border-box; position: relative; }
+        .logout-btn { background: #ff4757; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
+        .nav a { text-decoration: none; color: #999; font-size: 0.75rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h2>Settings</h2>
+        <p>User: hyun56</p>
+        <button class="logout-btn" onclick="window.location.href='index.html'">Logout</button>
+        <nav class="nav">
+            <a href="dashboard.html">🏠<br>Home</a>
+            <a href="transfer.html">💸<br>Transfer</a>
+            <a href="settings.html" style="color: #007bff; font-weight: bold;">⚙️<br>Settings</a>
+        </nav>
+    </div>
+</body>
+</html>
