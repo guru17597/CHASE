@@ -24,7 +24,9 @@
         label { font-size: 0.85rem; font-weight: bold; color: #444; display: block; margin-bottom: 5px; }
         input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
         
-        .fee-preview { background: #fdfdfd; border: 1px dashed #ccc; padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 0.9rem; }
+        .fee-preview { background: #fdfdfd; border: 1px solid #eee; padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 0.9rem; line-height: 1.6; }
+        .exchange-rate { color: #28a745; font-weight: bold; margin-bottom: 5px; display: block; }
+        .tax-note { color: #dc3545; font-size: 0.75rem; display: block; margin-top: 5px; }
         .btn-send { background: var(--accent); color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
 
         /* Bottom Nav */
@@ -46,26 +48,55 @@
         <div id="local" class="form-container active">
             <div class="input-group">
                 <label>Select US Bank</label>
-                <select>
+                <select id="localBank">
                     <option>JPMorgan Chase</option>
                     <option>Bank of America</option>
                     <option>Wells Fargo</option>
                     <option>Citigroup</option>
+                    <option>Goldman Sachs</option>
+                    <option>Morgan Stanley</option>
+                    <option>U.S. Bancorp</option>
+                    <option>PNC Financial Services</option>
+                    <option>Truist Financial</option>
+                    <option>Capital One</option>
                 </select>
             </div>
             <div class="input-group"><label>Account Number</label><input type="number" placeholder="Recipient Account"></div>
             <div class="input-group"><label>Amount ($)</label><input type="number" id="localAmt" oninput="calcFee('local')" placeholder="0.00"></div>
-            <div class="fee-preview">Service Fee (0.5%): <strong id="localFee">$0.00</strong></div>
+            <div class="fee-preview">
+                Service Fee (0.5%): <strong id="localFee">$0.00</strong>
+            </div>
             <button class="btn-send" onclick="confirmTx('Local')">Send Local Transfer</button>
         </div>
 
         <!-- INTERNATIONAL TRANSFER -->
         <div id="intl" class="form-container">
-            <div class="input-group"><label>Recipient Country</label><input type="text" placeholder="e.g. United Kingdom"></div>
+            <div class="input-group">
+                <label>Recipient Currency</label>
+                <select id="currencySelect" onchange="calcFee('intl')">
+                    <option value="0.92">EUR - Euro</option>
+                    <option value="0.79">GBP - British Pound</option>
+                    <option value="32.42">TWD - Taiwan Dollar</option>
+                    <option value="32.05">TRY - Turkish Lira</option>
+                    <option value="3.98">PLN - Polish Zloty</option>
+                    <option value="151.20">JPY - Japanese Yen</option>
+                    <option value="1.36">CAD - Canadian Dollar</option>
+                    <option value="1.53">AUD - Australian Dollar</option>
+                    <option value="83.35">INR - Indian Rupee</option>
+                    <option value="7.23">CNY - Chinese Yuan</option>
+                    <option value="1.35">SGD - Singapore Dollar</option>
+                </select>
+            </div>
+            <div class="input-group"><label>Recipient Account Number / IBAN</label><input type="text" placeholder="Enter Account or IBAN"></div>
             <div class="input-group"><label>SWIFT / BIC Code</label><input type="text" placeholder="Bank Identifier Code"></div>
             <div class="input-group"><label>Amount ($)</label><input type="number" id="intlAmt" oninput="calcFee('intl')" placeholder="Minimum $10,000"></div>
-            <div class="fee-preview">Regulation Fee (1.8%): <strong id="intlFee">$0.00</strong></div>
-            <button class="btn-send" onclick="confirmTx('International')">Send Wire Transfer</button>
+            
+            <div class="fee-preview">
+                <span class="exchange-rate">Recipient Receives: <span id="convertedAmt">0.00</span></span>
+                Tax & Exchange Fee (1.8%): <strong id="intlFee">$0.00</strong>
+                <span class="tax-note">*This fee is mandatory for cross-border currency conversion.</span>
+            </div>
+            <button class="btn-send" onclick="confirmTx('International')">Process International Wire</button>
         </div>
 
         <!-- BILLS -->
@@ -81,20 +112,6 @@
             <div class="input-group"><label>Reference Number</label><input type="text" placeholder="Enter Reference"></div>
             <div class="input-group"><label>Amount ($)</label><input type="number" placeholder="0.00"></div>
             <button class="btn-send" onclick="alert('Bill Payment Scheduled')">Pay Bill</button>
-        </div>
-
-        <!-- Live Chat Widget -->
-        <div id="chat-widget" style="position: fixed; bottom: 85px; right: 20px; z-index: 1000;">
-            <button onclick="toggleChat()" style="background: #007bff; color: white; border: none; width: 55px; height: 55px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; font-size: 22px;">💬</button>
-            <div id="chat-window" style="display: none; position: absolute; bottom: 70px; right: 0; width: 280px; background: white; border-radius: 15px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border: 1px solid #eee;">
-                <div style="background: #08415c; color: white; padding: 12px; border-radius: 15px 15px 0 0; font-weight: bold; font-size: 0.9rem;">Customer Support</div>
-                <div style="height: 150px; padding: 15px; font-size: 0.85rem; color: #555; overflow-y: auto;">
-                    <p style="background: #f1f1f1; padding: 8px; border-radius: 8px;">Hello Hyun! How can we assist you with your transfer today?</p>
-                </div>
-                <div style="padding: 10px; border-top: 1px solid #eee; display: flex;">
-                    <input type="text" placeholder="Type here..." style="flex: 1; border: 1px solid #ddd; padding: 5px; border-radius: 4px;">
-                </div>
-            </div>
         </div>
 
         <nav class="nav">
@@ -116,28 +133,40 @@
 
         function calcFee(type) {
             if(type === 'local') {
-                let amt = document.getElementById('localAmt').value;
+                let amt = document.getElementById('localAmt').value || 0;
                 document.getElementById('localFee').innerText = "$" + (amt * 0.005).toFixed(2);
             } else {
-                let amt = document.getElementById('intlAmt').value;
-                document.getElementById('intlFee').innerText = "$" + (amt * 0.018).toFixed(2);
+                let amt = document.getElementById('intlAmt').value || 0;
+                let rate = document.getElementById('currencySelect').value;
+                let currencyName = document.getElementById('currencySelect').options[document.getElementById('currencySelect').selectedIndex].text;
+                let currencyCode = currencyName.split(' - ')[0];
+                
+                // Calculate 1.8% Tax & Exchange Fee
+                let fee = (amt * 0.018).toFixed(2);
+                document.getElementById('intlFee').innerText = "$" + fee;
+                
+                // Calculate Exchange amount (the amount after fee is converted)
+                let converted = amt * rate;
+                document.getElementById('convertedAmt').innerText = converted.toLocaleString(undefined, {minimumFractionDigits: 2}) + " " + currencyCode;
             }
         }
 
         function confirmTx(type) {
             if (type === 'International') {
-                let amt = document.getElementById('intlAmt').value;
-                if (amt < 10000) {
+                let amt = parseFloat(document.getElementById('intlAmt').value);
+                if (!amt || amt < 10000) {
                     alert("Minimum amount for International Wire is $10,000.00");
                     return;
                 }
+                
+                let tax = (amt * 0.018).toFixed(2);
+                let total = (amt + parseFloat(tax)).toFixed(2);
+                
+                alert("Transfer Processing...\n\nAmount: $" + amt.toLocaleString() + "\nTax & Exchange Fee (1.8%): $" + tax + "\nTotal to be Deducted: $" + total);
+            } else {
+                let amt = parseFloat(document.getElementById('localAmt').value) || 0;
+                alert("Local Transfer of $" + amt.toLocaleString() + " has been initiated.");
             }
-            alert(type + " Transfer Initiated. Verification code sent to +1 ***-***-8890");
-        }
-
-        function toggleChat() {
-            const chat = document.getElementById('chat-window');
-            chat.style.display = chat.style.display === 'none' ? 'block' : 'none';
         }
     </script>
 </body>
