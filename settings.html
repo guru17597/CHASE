@@ -1,25 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Settings</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
     <style>
-        body { font-family: system-ui; background: #f0f2f5; margin: 0; display: flex; justify-content: center; }
-        .app { width: 100%; max-width: 414px; background: #fff; min-height: 100vh; padding: 40px 25px; box-sizing: border-box; position: relative; }
-        .logout-btn { background: #ff4757; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 20px; }
-        .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
+        :root { --primary: #08415c; --accent: #007bff; --bg: #f0f2f5; --white: #fff; --text: #333; }
+        body { font-family: system-ui; background: var(--bg); margin: 0; display: flex; justify-content: center; color: var(--text); }
+        .app { width: 100%; max-width: 414px; background: var(--white); min-height: 100vh; padding-bottom: 100px; box-sizing: border-box; position: relative; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        
+        /* Translator Header */
+        .translate-wrapper { background: var(--primary); padding: 10px; text-align: center; border-bottom: 1px solid #063044; }
+        .goog-logo-link, .goog-te-gadget span { display: none !important; }
+        .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
+        .goog-te-combo { padding: 6px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer; }
+
+        .content { padding: 25px; }
+        h2 { margin-top: 0; color: var(--primary); font-size: 1.5rem; }
+        
+        .user-profile { background: #f8f9fa; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 25px; border: 1px solid #eee; }
+        .avatar { width: 60px; height: 60px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 10px; font-weight: bold; }
+        
+        .settings-group { margin-bottom: 20px; }
+        .group-title { font-size: 0.75rem; color: #888; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 0.5px; }
+        
+        .setting-item { background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 15px; border: 1px solid #eee; border-radius: 12px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; }
+        .setting-item:active { background: #f0f2f5; }
+        .item-info { display: flex; align-items: center; gap: 12px; }
+        .item-label { font-weight: 500; font-size: 0.95rem; }
+
+        /* Loader Overlay */
+        #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 1000; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .logout-btn { background: #fff1f2; color: #ff4757; border: 1px solid #ffccd1; padding: 15px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        
+        .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 999; }
         .nav a { text-decoration: none; color: #999; font-size: 0.75rem; text-align: center; }
     </style>
 </head>
 <body>
+    <!-- Loader for Service Delay -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <p style="font-weight: bold; color: var(--primary);">Connecting to server...</p>
+        <p style="color: #666; font-size: 0.8rem;">Kindly be patient...</p>
+    </div>
+
     <div class="app">
-        <h2>Settings</h2>
-        <p>User: hyun56</p>
-        <button class="logout-btn" onclick="window.location.href='index.html'">Logout</button>
+        <!-- Translator -->
+        <div class="translate-wrapper"><div id="google_translate_element"></div></div>
+
+        <div class="content">
+            <h2>Settings</h2>
+
+            <!-- Profile View -->
+            <div class="user-profile">
+                <div class="avatar">H</div>
+                <div style="font-weight: bold; font-size: 1.1rem;">hyun56</div>
+                <div style="font-size: 0.85rem; color: #666;">Status: <span style="color: #28a745; font-weight: bold;">Verified</span></div>
+            </div>
+
+            <div class="settings-group">
+                <span class="group-title">Personal</span>
+                <div class="setting-item" onclick="processService()">
+                    <div class="item-info">👤<span class="item-label">Edit Profile</span></div>
+                </div>
+                <div class="setting-item" onclick="processService()">
+                    <div class="item-info">📧<span class="item-label">Email Address</span></div>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <span class="group-title">Security</span>
+                <div class="setting-item" onclick="processService()">
+                    <div class="item-info">🔐<span class="item-label">Transaction PIN</span></div>
+                </div>
+                <div class="setting-item" onclick="processService()">
+                    <div class="item-info">🖐️<span class="item-label">Biometrics</span></div>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <span class="group-title">Support</span>
+                <!-- INSTANT WHATSAPP LINK -->
+                <div class="setting-item" onclick="window.location.href='https://wa.me.'">
+                    <div class="item-info">
+                        <span style="font-size: 1.2rem;">💬</span>
+                        <span class="item-label">Live Support (WhatsApp)</span>
+                    </div>
+                    <span style="color: #28a745; font-size: 0.7rem; font-weight: bold;">ONLINE</span>
+                </div>
+            </div>
+
+            <button class="logout-btn" onclick="window.location.href='index.html'">Logout</button>
+        </div>
+
+        <!-- Footer Nav -->
         <nav class="nav">
             <a href="dashboard.html">🏠<br>Home</a>
             <a href="transfer.html">💸<br>Transfer</a>
-            <a href="settings.html" style="color: #007bff; font-weight: bold;">⚙️<br>Settings</a>
+            <a href="settings.html" style="color: var(--accent); font-weight: bold;">⚙️<br>Settings</a>
         </nav>
     </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'zh-CN,tr,it,ko,pl,es,fr,de,ar'
+            }, 'google_translate_element');
+        }
+
+        // 5-Second Delay Function
+        function processService() {
+            document.getElementById('loader').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                alert("Service is not available right now. Visit the nearby branch.");
+            }, 5000);
+        }
+    </script>
+    <script type="text/javascript" src="//://google.com"></script>
 </body>
 </html>
