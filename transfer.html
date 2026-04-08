@@ -1,27 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>Send Money</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfers & Payments</title>
     <style>
-        body { font-family: system-ui; background: #f0f2f5; margin: 0; display: flex; justify-content: center; }
-        .app { width: 100%; max-width: 414px; background: #fff; min-height: 100vh; padding: 40px 25px; box-sizing: border-box; position: relative; }
-        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 10px; }
-        .btn { background: #007bff; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; }
-        .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
+        :root { --primary: #08415c; --accent: #007bff; --bg: #f0f2f5; --white: #fff; }
+        body { font-family: system-ui; background: var(--bg); margin: 0; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 414px; background: var(--white); min-height: 100vh; position: relative; padding-bottom: 100px; box-sizing: border-box;}
+        
+        .header { padding: 30px 25px 10px; background: var(--primary); color: white; text-align: center; }
+        
+        /* Tab Navigation */
+        .tab-bar { display: flex; background: #eef2f7; margin: 20px; border-radius: 12px; padding: 5px; }
+        .tab { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem; background: none; color: #666; }
+        .tab.active { background: var(--white); color: var(--accent); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        /* Form Areas */
+        .form-container { padding: 0 25px; display: none; }
+        .form-container.active { display: block; }
+        
+        .input-group { margin-bottom: 15px; }
+        label { font-size: 0.85rem; font-weight: bold; color: #444; display: block; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
+        
+        .fee-preview { background: #fdfdfd; border: 1px dashed #ccc; padding: 15px; border-radius: 10px; margin: 15px 0; font-size: 0.9rem; }
+        .btn-send { background: var(--accent); color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
+
+        /* Bottom Nav */
+        .nav { position: fixed; bottom: 0; width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; z-index: 999; }
         .nav a { text-decoration: none; color: #999; font-size: 0.75rem; text-align: center; }
     </style>
 </head>
 <body>
     <div class="app">
-        <h2>Send Money</h2>
-        <input type="text" placeholder="Recipient Account">
-        <input type="number" placeholder="Amount">
-        <button class="btn" onclick="window.location.href='confirm.html'"
+        <div class="header"><h3>Move Money</h3></div>
+
+        <div class="tab-bar">
+            <button class="tab active" onclick="switchTab(event, 'local')">Local</button>
+            <button class="tab" onclick="switchTab(event, 'intl')">International</button>
+            <button class="tab" onclick="switchTab(event, 'bills')">Bills</button>
+        </div>
+
+        <!-- LOCAL TRANSFER -->
+        <div id="local" class="form-container active">
+            <div class="input-group">
+                <label>Select US Bank</label>
+                <select>
+                    <option>JPMorgan Chase</option>
+                    <option>Bank of America</option>
+                    <option>Wells Fargo</option>
+                    <option>Citigroup</option>
+                </select>
+            </div>
+            <div class="input-group"><label>Account Number</label><input type="number" placeholder="Recipient Account"></div>
+            <div class="input-group"><label>Amount ($)</label><input type="number" id="localAmt" oninput="calcFee('local')" placeholder="0.00"></div>
+            <div class="fee-preview">Service Fee (0.5%): <strong id="localFee">$0.00</strong></div>
+            <button class="btn-send" onclick="confirmTx('Local')">Send Local Transfer</button>
+        </div>
+
+        <!-- INTERNATIONAL TRANSFER -->
+        <div id="intl" class="form-container">
+            <div class="input-group"><label>Recipient Country</label><input type="text" placeholder="e.g. United Kingdom"></div>
+            <div class="input-group"><label>SWIFT / BIC Code</label><input type="text" placeholder="Bank Identifier Code"></div>
+            <div class="input-group"><label>Amount ($)</label><input type="number" id="intlAmt" oninput="calcFee('intl')" placeholder="Minimum $10,000"></div>
+            <div class="fee-preview">Regulation Fee (1.8%): <strong id="intlFee">$0.00</strong></div>
+            <button class="btn-send" onclick="confirmTx('International')">Send Wire Transfer</button>
+        </div>
+
+        <!-- BILLS -->
+        <div id="bills" class="form-container">
+            <div class="input-group">
+                <label>Biller Category</label>
+                <select>
+                    <option>Electricity</option>
+                    <option>Water & Sewage</option>
+                    <option>Internet / Mobile</option>
+                </select>
+            </div>
+            <div class="input-group"><label>Reference Number</label><input type="text" placeholder="Enter Reference"></div>
+            <div class="input-group"><label>Amount ($)</label><input type="number" placeholder="0.00"></div>
+            <button class="btn-send" onclick="alert('Bill Payment Scheduled')">Pay Bill</button>
+        </div>
+
+        <!-- Live Chat Widget -->
+        <div id="chat-widget" style="position: fixed; bottom: 85px; right: 20px; z-index: 1000;">
+            <button onclick="toggleChat()" style="background: #007bff; color: white; border: none; width: 55px; height: 55px; border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; font-size: 22px;">💬</button>
+            <div id="chat-window" style="display: none; position: absolute; bottom: 70px; right: 0; width: 280px; background: white; border-radius: 15px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border: 1px solid #eee;">
+                <div style="background: #08415c; color: white; padding: 12px; border-radius: 15px 15px 0 0; font-weight: bold; font-size: 0.9rem;">Customer Support</div>
+                <div style="height: 150px; padding: 15px; font-size: 0.85rem; color: #555; overflow-y: auto;">
+                    <p style="background: #f1f1f1; padding: 8px; border-radius: 8px;">Hello Hyun! How can we assist you with your transfer today?</p>
+                </div>
+                <div style="padding: 10px; border-top: 1px solid #eee; display: flex;">
+                    <input type="text" placeholder="Type here..." style="flex: 1; border: 1px solid #ddd; padding: 5px; border-radius: 4px;">
+                </div>
+            </div>
+        </div>
+
+        <nav class="nav">
             <a href="dashboard.html">🏠<br>Home</a>
-            <a href="transfer.html" style="color: #007bff; font-weight: bold;">💸<br>Transfer</a>
+            <a href="transfer.html" style="color: var(--accent); font-weight: bold;">💸<br>Transfer</a>
             <a href="settings.html">⚙️<br>Settings</a>
         </nav>
     </div>
+
+    <script>
+        function switchTab(evt, tabName) {
+            let containers = document.getElementsByClassName("form-container");
+            for (let i = 0; i < containers.length; i++) { containers[i].style.display = "none"; }
+            let tabs = document.getElementsByClassName("tab");
+            for (let i = 0; i < tabs.length; i++) { tabs[i].className = tabs[i].className.replace(" active", ""); }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function calcFee(type) {
+            if(type === 'local') {
+                let amt = document.getElementById('localAmt').value;
+                document.getElementById('localFee').innerText = "$" + (amt * 0.005).toFixed(2);
+            } else {
+                let amt = document.getElementById('intlAmt').value;
+                document.getElementById('intlFee').innerText = "$" + (amt * 0.018).toFixed(2);
+            }
+        }
+
+        function confirmTx(type) {
+            if (type === 'International') {
+                let amt = document.getElementById('intlAmt').value;
+                if (amt < 10000) {
+                    alert("Minimum amount for International Wire is $10,000.00");
+                    return;
+                }
+            }
+            alert(type + " Transfer Initiated. Verification code sent to +1 ***-***-8890");
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chat-window');
+            chat.style.display = chat.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
 </body>
 </html>
-
