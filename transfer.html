@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>Send Money</title>
+    <style>
+        body { font-family: system-ui; background: #f0f2f5; margin: 0; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 414px; background: #fff; min-height: 100vh; padding: 40px 25px; box-sizing: border-box; position: relative; }
+        input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #eee; border-radius: 10px; }
+        .btn { background: #007bff; color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 414px; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; }
+        .nav a { text-decoration: none; color: #999; font-size: 0.75rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h2>Send Money</h2>
+        <input type="text" placeholder="Recipient Account">
+        <input type="number" placeholder="Amount">
+        <button class="btn" onclick="alert('Pending Verification')">Send Now</button>
+        <nav class="nav">
+            <a href="dashboard.html">🏠<br>Home</a>
+            <a href="transfer.html" style="color: #007bff; font-weight: bold;">💸<br>Transfer</a>
+            <a href="settings.html">⚙️<br>Settings</a>
+        </nav>
+    </div>
+</body>
+</html>
+
